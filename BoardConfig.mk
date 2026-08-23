@@ -184,6 +184,7 @@ TW_PREPARE_DATA_MEDIA_EARLY := true
 TW_LOAD_VENDOR_MODULES          := true
 TW_LOAD_VENDOR_BOOT_MODULES     := true
 TW_LOAD_VENDOR_MODULES_EXCLUDE_GKI := true
+TW_SKIP_ADDITIONAL_MODULES      := true
 
 # Workaround for copy_out error
 TARGET_COPY_OUT_VENDOR     := vendor
