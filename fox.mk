@@ -66,3 +66,6 @@ OF_ENABLE_FRP_ADDON := 1
 
 # keymaster
 OF_DEFAULT_KEYMASTER_VERSION=4.1
+
+# haptics / vibrator
+OF_ENABLE_HAPTICS := 1
