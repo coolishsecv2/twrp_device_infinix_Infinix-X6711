@@ -126,7 +126,7 @@ jobs:
           echo "OrangeFox source already present - skipping sync"
         fi
 
-    - name: Clone Device Tree & Inject Hook Script
+    - name: Clone Device Tree
       id: clone
       run: |
         cd ${GITHUB_WORKSPACE}/OrangeFox/fox_${{ github.event.inputs.MANIFEST_BRANCH }}
@@ -134,21 +134,16 @@ jobs:
         cd ${{ github.event.inputs.DEVICE_PATH }}
         echo "COMMIT_ID=$(git rev-parse HEAD)" >> $GITHUB_ENV
         echo "commit_id=$(git rev-parse HEAD)" >> $GITHUB_OUTPUT
-        
-        # Inject postrecoveryboot.sh into the cloned device tree root
-        mkdir -p recovery/root/system/bin
-        if [ -f "${GITHUB_WORKSPACE}/patches/postrecoveryboot.sh" ]; then
-          cp ${GITHUB_WORKSPACE}/patches/postrecoveryboot.sh recovery/root/system/bin/postrecoveryboot.sh
-          chmod +x recovery/root/system/bin/postrecoveryboot.sh
-          echo "Successfully injected postrecoveryboot.sh script."
-        fi
 
     - name: Apply OrangeFox Source Patches
       run: |
         cd ${GITHUB_WORKSPACE}/OrangeFox/fox_${{ github.event.inputs.MANIFEST_BRANCH }}/bootable/recovery
-        if [ -f "${GITHUB_WORKSPACE}/patches/ofox_startup_reload_fix.patch" ]; then
-          git apply --recount -p3 ${GITHUB_WORKSPACE}/patches/ofox_startup_reload_fix.patch
+        PATCH_DIR="${GITHUB_WORKSPACE}/OrangeFox/fox_${{ github.event.inputs.MANIFEST_BRANCH }}/${{ github.event.inputs.DEVICE_PATH }}/patches"
+        if [ -f "${PATCH_DIR}/ofox_startup_reload_fix.patch" ]; then
+          git apply --recount -p3 "${PATCH_DIR}/ofox_startup_reload_fix.patch"
           echo "Applied ofox_startup_reload_fix: validate/discard stale themes + skip startup theme reload"
+        else
+          echo "Warning: ofox_startup_reload_fix.patch not found in device tree patches/ directory."
         fi
 
     - name: Check Manifest Branch & Set Build Command
