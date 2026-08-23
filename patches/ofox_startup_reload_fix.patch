@@ -118,8 +118,9 @@ index ecf2515..701d4d6 100644
 +  // attempted with a valid saved theme (see gui_validate_theme_files()).
 +  if (!gui_validate_theme_files())
 +	return false;
-   return (TWFunc::Path_Exists(FOX_THEME_PATH) || TWFunc::Path_Exists(FOX_NAVBAR_PATH));
- }
+ #if defined(FOX_ALLOW_EARLY_SETTINGS_LOAD) && defined(FOX_SETTINGS_ROOT_DIRECTORY)
+   return false;
+ #else
  
 @@ -600,12 +604,15 @@ int main(int argc, char **argv) {
    	TWFunc::Setup_Verity_Forced_Encryption();
