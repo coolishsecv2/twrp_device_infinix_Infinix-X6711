@@ -15,3 +15,8 @@ ro.vendor.mtk_f2fs_enable=1
 
 # FRP
 ro.frp.pst=/dev/block/by-name/frp
+
+# USB MTP
+ro.sys.usb.storage.type=mtp
+sys.usb.mtp.device=1
+persist.sys.usb.config=mtp,adb
